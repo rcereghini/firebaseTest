@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome to Firebase Hosting</title>
+
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/5.6.0/firebase-app.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/5.6.0/firebase-auth.js"></script>
+    <script defer src="/__/firebase/5.6.0/firebase-database.js"></script>
+    <script defer src="/__/firebase/5.6.0/firebase-messaging.js"></script>
+    <script defer src="/__/firebase/5.6.0/firebase-storage.js"></script>
+    <!-- initialize the SDK after all desired features are loaded -->
+    <script defer src="/__/firebase/init.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-firestore.js"></script>
+  </head>
+  <body>
+    <div id="message">
+      <h2 id='textBox'>How do you currently feel?</h2>
+      <h2 id='output'></h2>
+      <input type="text" id="inputText"/>
+      <button id="saveButton">Save</button>
+    </div>
+    <div style="display:block; border: 1px solid black; padding: 2em;">
+      Create Account Here!
+      
+        <input type='text' id='fullNameInput' placeholder="Account Name"/>
+        <input type='password' id='passwordInput' placeholder="Password"/>
+        <button id='submitButton'>Create Account</button>
+  
+    </div>
+    <div style="display:block; border: 1px solid black; padding: 2em;">
+        Test Account Here!
+        
+          <input type='text' id='fullNameInputTest' placeholder="Enter Account Name"/>
+          <button id='submitButtonTest'>Check for Account</button>
+    
+      </div>
+    <script src="fireTalker.js"></script>
+  </body>
+</html>
