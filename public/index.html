@@ -16,15 +16,143 @@
     <script defer src="/__/firebase/init.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-firestore.js"></script>
+    <script>
+      
+      var config = {
+    apiKey: "AIzaSyDhxypSiLc2YIWZKVfmKDbgnIM73tFBKsM",
+    authDomain: "cya2018-6942c.firebaseapp.com",
+    databaseURL: "https://cya2018-6942c.firebaseio.com",
+    projectId: "cya2018-6942c",
+    storageBucket: "cya2018-6942c.appspot.com",
+    messagingSenderId: "590960767250"
+};
+firebase.initializeApp(config);
+var firestore = firebase.firestore();
+
+const docRef = firestore.doc('samples/sandwichData');
+
+
+var usersRef = firestore.collection("users");
+var bookRef = firestore.collection('Book')
+
+
+
+const getPage = (pageNumber) => {
+    bookRef.where('page.pageNumber', '==', pageNumber).get().then(function(data){
+      console.log(data) 
+      console.log(data.docs[0].data())
+        let page = data.docs[0].data()
+        theTitle.innerText = page.page.title 
+        theText.innerText = page.page.text 
+        opOne.innerText = page.page.options[0].one
+        opTwo.innerText = page.page.options[0].two
+        opThree.innerText = page.page.options[0].three
+    })
+}
+
+
+getPage("1")
+
+function createPage(){
+    console.log('Preparing to send information...')
+    firestore.collection('Book').doc().set({
+        page: {
+            inventoryAdd: document.getElementById('invAddInput').value,
+            inventoryRemove: document.getElementById('invRemoveInput').value,
+            options: [
+                {
+                    one: document.getElementById('opOneText').value,
+                    two: document.getElementById('opTwoText').value,
+                    three: document.getElementById('opThreeText').value
+                },
+                {
+                    one: document.getElementById('opOneDest').value,
+                    two: document.getElementById('opTwoDest').value,
+                    three: document.getElementById('opThreeDest').value
+                },
+                {
+                    oneReq: [document.getElementById('opOneStrReq').value, document.getElementById('opOneIntReq').value, document.getElementById('opOneDexReq').value, document.getElementById('opOneItemReq').value],
+                    twoReq: [document.getElementById('opTwoStrReq').value, document.getElementById('opTwoIntReq').value, document.getElementById('opTwoDexReq').value, document.getElementById('opTwoItemReq').value],
+                    threeReq: [document.getElementById('opThreeStrReq').value, document.getElementById('opThreeIntReq').value, document.getElementById('opThreeDexReq').value, document.getElementById('opThreeItemReq').value]
+                }
+            ],
+            pageNumber: document.getElementById('pageNumberInput').value,
+            statChange: [document.getElementById('strAddInput').value, document.getElementById('intAddInput').value, document.getElementById('dexAddInput').value],
+            title: document.getElementById('titleInput').value,
+            text: document.getElementById('textInput').value
+        }
+    })
+    var inputs = document.querySelectorAll('input')
+    for(let i = 0; i<inputs.length; i++){
+      inputs[i].value = '';
+    }
+    document.querySelector('#textInput').value = '';
+}
+    </script>
   </head>
   <body>
+    
     <div>
-      <h2 id="title"></h2>
-      <h3 id="bodyText"></h3>
-      <button id="optionOne"></button>
-      <button id="optionTwo"></button>
-      <button id="optionThree"></button>
+      <h2>Page Creator</h2>
+      <div>
+        <input type='number' id='pageNumberInput' placeholder="pageNumber"/>
+        <input type='text' id='titleInput' placeholder="title"/>
+      </div>
+      <textarea type='text' placeholder="text" id='textInput' style="width:75%; height: 350px;"></textarea>
+
+      <div>
+        <input type='text' id='opOneText' placeholder="option one text"/>
+        <input type='number' id='opOneDest' placeholder="option one to page..."/>
+        <input type='number' id='opOneStrReq' placeholder="option one strReq"/>
+        <input type='number' id='opOneIntReq' placeholder="option one intReq"/>
+        <input type='number' id='opOneDexReq' placeholder="option one dexReq"/>
+        <input type='string' id='opOneItemReq' placeholder="option one itemReq"/>
+      </div>
+      <div>
+        <input type='text' id='opTwoText' placeholder="option two text"/>
+        <input type='number' id='opTwoDest' placeholder="option two to page..."/>
+        <input type='number' id='opTwoStrReq' placeholder="option two strReq"/>
+        <input type='number' id='opTwoIntReq' placeholder="option two intReq"/>
+        <input type='number' id='opTwoDexReq' placeholder="option two dexReq"/>
+        <input type='string' id='opTwoItemReq' placeholder="option two itemReq"/>
+      </div>
+      <div>
+        <input type='text' id='opThreeText' placeholder="option three text"/>
+        <input type='number' id='opThreeDest' placeholder="option three to page..."/>
+        <input type='number' id='opThreeStrReq' placeholder="option three strReq"/>
+        <input type='number' id='opThreeIntReq' placeholder="option three intReq"/>
+        <input type='number' id='opThreeDexReq' placeholder="option three dexReq"/>
+        <input type='string' id='opThreeItemReq' placeholder="option three itemReq"/>
+      </div>
+      <input type='text' id='invAddInput' placeholder="inventoryAdd"/>
+      <input type='text' id='invRemoveInput' placeholder="inventoryRemove"/>
+      <div>
+        <input type='number' id='strAddInput' placeholder="strChange"/>
+        <input type='number' id='intAddInput' placeholder="intChange"/>
+        <input type='number' id='dexAddInput' placeholder="dexChange"/>
+      </div>
+      <button style='margin-bottom:2em;' id="createPageButton" onclick='createPage()'>Create Page</button>
+      <hr>
+      <div style='margin-bottom:2em;'>
+        <h2 id="title"></h2>
+        <h3 id="bodyText"></h3>
+        <button id="optionOne"></button>
+        <button id="optionTwo"></button>
+        <button id="optionThree"></button>
+      </div>
+      <hr>
+      <div style='margin:2em 0em;'>
+        <input type='string' id='testPageNumber' placeholder='Enter Page Number'/><button id='viewPageButton'>View Page</button>
+      </div>
+      <hr>
     </div>
-    <script src="fireTalker.js"></script>
+    <!-- <script src="fireTalker.js"></script> -->
+    <script>const theTitle = document.getElementById('title')
+      const theText = document.getElementById('bodyText')
+      const opOne = document.getElementById('optionOne')
+      const opTwo = document.getElementById('optionTwo')
+      const opThree = document.getElementById('optionThree')
+      document.querySelector('#testPageNumber').addEventListener('click', function(){
+        getPage(document.getElementById("testPageNumber").value)})</script>
   </body>
 </html>

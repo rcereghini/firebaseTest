@@ -1,41 +1,42 @@
-var config = {
-    apiKey: "AIzaSyDhxypSiLc2YIWZKVfmKDbgnIM73tFBKsM",
-    authDomain: "cya2018-6942c.firebaseapp.com",
-    databaseURL: "https://cya2018-6942c.firebaseio.com",
-    projectId: "cya2018-6942c",
-    storageBucket: "cya2018-6942c.appspot.com",
-    messagingSenderId: "590960767250"
-};
-firebase.initializeApp(config);
-var firestore = firebase.firestore();
+// var config = {
+//     apiKey: "AIzaSyDhxypSiLc2YIWZKVfmKDbgnIM73tFBKsM",
+//     authDomain: "cya2018-6942c.firebaseapp.com",
+//     databaseURL: "https://cya2018-6942c.firebaseio.com",
+//     projectId: "cya2018-6942c",
+//     storageBucket: "cya2018-6942c.appspot.com",
+//     messagingSenderId: "590960767250"
+// };
+// firebase.initializeApp(config);
+// var firestore = firebase.firestore();
 
 
 // const docRef = firestore.collection('samples').doc('sandwichData')
-const docRef = firestore.doc('samples/sandwichData');
+// const docRef = firestore.doc('samples/sandwichData');
 
 
-var usersRef = firestore.collection("users");
-var bookRef = firestore.collection('Book')
-const theTitle = document.getElementById('title')
-const theText = document.getElementById('bodyText')
-const opOne = document.getElementById('optionOne')
-const opTwo = document.getElementById('optionTwo')
-const opThree = document.getElementById('optionThree')
+// var usersRef = firestore.collection("users");
+// var bookRef = firestore.collection('Book')
+// const theTitle = document.getElementById('title')
+// const theText = document.getElementById('bodyText')
+// const opOne = document.getElementById('optionOne')
+// const opTwo = document.getElementById('optionTwo')
+// const opThree = document.getElementById('optionThree')
 
 
-const getPage = (pageNumber) => {
-    bookRef.where('page.pageNumber', '==', pageNumber).get().then(function(data){
-        console.log(data.docs[0].data())
-        let page = data.docs[0].data()
-        theTitle.innerText = page.page.title 
-        theText.innerText = page.page.text 
-        opOne.innerText = page.page.options[0].one
-        opTwo.innerText = page.page.options[0].two
-        opThree.innerText = page.page.options[0].three
-    })
-}
-    
-getPage(0)
+// const getPage = (pageNumber) => {
+//     bookRef.where('page.pageNumber', '==', pageNumber).get().then(function(data){
+//         console.log(data.docs[0].data())
+//         let page = data.docs[0].data()
+//         theTitle.innerText = page.page.title 
+//         theText.innerText = page.page.text 
+//         opOne.innerText = page.page.options[0].one
+//         opTwo.innerText = page.page.options[0].two
+//         opThree.innerText = page.page.options[0].three
+//     })
+// }
+
+
+// getPage(0)
 
 
 
@@ -50,7 +51,7 @@ getPage(0)
 // })
 
 // Create a query against the collection.
-// submitButtonTest.addEventListener('click', function(){
+// document.querySelector('#createPageButton').addEventListener('click', function(){
 //     var query = usersRef.where("name", "==", nameInputTest.value)
 //     query.get().then(function(data){
  
@@ -60,12 +61,8 @@ getPage(0)
 //         console.log(doc.exists)
 //         if(doc.exists){
 //             alert(`An account was found matching that username.`)}else{alert('No matching account found.')}
-//     })}else{alert('No account found.')}
-// }).catch(
-//         console.log('hi')
-//     )
-    
-// })
+//     })} 
+// )
 
 // submitButton.addEventListener('click', function(){
 //     const theName = nameInput.value;
