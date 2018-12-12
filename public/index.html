@@ -47,6 +47,8 @@ const getPage = (pageNumber) => {
         opOne.innerText = page.page.options[0].one
         opTwo.innerText = page.page.options[0].two
         opThree.innerText = page.page.options[0].three
+    }).catch(function(){
+      alert('Oh no! That page must not exist. Try again!')
     })
 }
 
@@ -55,7 +57,9 @@ getPage("1")
 
 function createPage(){
     console.log('Preparing to send information...')
-    firestore.collection('Book').doc().set({
+    firestore.collection('Book').where('page.pageNumber', '==', document.getElementById('pageNumberInput').value).get().then(function(data){
+      if(data.docs.length === 0){
+        firestore.collection('Book').doc().set({
         page: {
             inventoryAdd: document.getElementById('invAddInput').value,
             inventoryRemove: document.getElementById('invRemoveInput').value,
@@ -87,6 +91,13 @@ function createPage(){
       inputs[i].value = '';
     }
     document.querySelector('#textInput').value = '';
+    alert('Page successfully added! Keep up the good work!')
+      }else{
+        alert('That page number already exists!')
+      }
+      
+    })
+    
 }
     </script>
   </head>
