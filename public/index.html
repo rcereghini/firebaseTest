@@ -34,8 +34,28 @@ const docRef = firestore.doc('samples/sandwichData');
 
 var usersRef = firestore.collection("users");
 var bookRef = firestore.collection('Book')
+var newNode = ''
 
-
+function showPages(){
+  if(newNode)
+    newNode.removeChild(newNode.firstChild);
+  firestore.collection('Book').get().then(function(data){
+    console.log(data.docs)
+    for(let doc in data.docs){
+      // console.log(doc, data.docs.length)
+      newNode = document.createTextNode(data.docs[doc].data().page.pageNumber)
+      newP = document.createElement('p')
+      newP.style = 'border: 1px solid black; padding: .88em; text-align:center; width:40px; height: 25px; margin-left: 30px;'
+      newP.classList.add('pageButton')
+      newP.addEventListener('click', function(event){
+        getPage(data.docs[doc].data().page.pageNumber)
+      })
+      newP.appendChild(newNode)
+      document.getElementById('pageList').appendChild(newP)
+    }
+  })
+  newNode = ''
+}
 
 const getPage = (pageNumber) => {
     bookRef.where('page.pageNumber', '==', pageNumber).get().then(function(data){
@@ -43,17 +63,45 @@ const getPage = (pageNumber) => {
       console.log(data.docs[0].data())
         let page = data.docs[0].data()
         theTitle.innerText = page.page.title 
-        theText.innerText = page.page.text 
+        theText.innerText = page.page.text
+        if(page.page.options[0].one){
+        opOne.style.display = 'flex'
         opOne.innerText = page.page.options[0].one
+        opOne.addEventListener('click', function(){
+          getPage(page.page.options[1].one)
+        })
+      }else{
+        opOne.style.display = 'none'
+      }
+      if(page.page.options[0].two){
+        opTwo.style.display = 'flex'
         opTwo.innerText = page.page.options[0].two
+        opTwo.addEventListener('click', function(){
+          getPage(page.page.options[1].two)
+        })
+      }else{
+        opTwo.style.display = 'none'
+      }
+      if(page.page.options[0].three){
+        opThree.style.display = 'flex'
         opThree.innerText = page.page.options[0].three
+        opThree.addEventListener('click', function(){
+          getPage(page.page.options[1].three)
+        })
+      }else{
+        opThree.style.display = 'none'
+      }
     }).catch(function(){
       alert('Oh no! That page must not exist. Try again!')
     })
 }
 
 
-getPage("1")
+getPage("0")
+
+
+
+showPages()
 
 function createPage(){
     console.log('Preparing to send information...')
@@ -91,6 +139,7 @@ function createPage(){
       inputs[i].value = '';
     }
     document.querySelector('#textInput').value = '';
+    setTimeout(() => showPages(), 1300)
     alert('Page successfully added! Keep up the good work!')
       }else{
         alert('That page number already exists!')
@@ -100,6 +149,13 @@ function createPage(){
     
 }
     </script>
+    <style>
+      .pageButton:hover{
+        background-color:black;
+        color:white;
+        cursor: pointer;
+              }
+    </style>
   </head>
   <body>
     
@@ -152,8 +208,9 @@ function createPage(){
         <button id="optionThree"></button>
       </div>
       <hr>
-      <div style='margin:2em 0em;'>
-        <input type='string' id='testPageNumber' placeholder='Enter Page Number'/><button id='viewPageButton'>View Page</button>
+      <div style='margin:2em 0em; display:flex; flex-direction: row;'>
+        <input type='string' id='testPageNumber' placeholder='Enter Page Number' style='height: 40px'/><button id='viewPageButton' style='height: 46px'>View Page</button>
+        <div id="pageList" style="margin-left: 2em; width: 100%; display:flex; overflow: scroll">Currently Existing Pages: </div>
       </div>
       <hr>
     </div>
@@ -164,6 +221,10 @@ function createPage(){
       const opTwo = document.getElementById('optionTwo')
       const opThree = document.getElementById('optionThree')
       document.querySelector('#viewPageButton').addEventListener('click', function(){
-        getPage(document.getElementById("testPageNumber").value)})</script>
+        getPage(document.getElementById("testPageNumber").value)})
+        document.querySelector('#testPageNumber').addEventListener('keypress', function(event){
+        if(event.keyCode === 13)   
+        getPage(document.getElementById("testPageNumber").value)}) 
+        </script>
   </body>
 </html>
